@@ -1,0 +1,67 @@
+
+
+<html>
+    <head></head>
+
+    <body>
+        <script type="text/javascript" src="jquery-3.3.1.min.js"></script>
+        <script type="text/javascript">
+            var Image_slide = new Array("1.jpg", "2.jpg", "3.jpg", "4.jpg");// image container
+            var Img_Length  = Image_slide.length; // container length - 1
+            var imgCurrent = 0;
+            var refreshIntervalId = 0;
+
+            function init(){
+                document.slideshow.src = "0.jpg";
+                $("#start").show();
+            }
+
+            function getCurrent(){
+                return Math.floor((Math.random() * 10)) % 4;
+            }
+
+            function slide() {
+                setTimeout(function(){
+                    imgCurrent = getCurrent();
+                    document.slideshow.src = Image_slide[imgCurrent]
+                }, 1000);
+                
+                var mode = $(":input:radio[name=mode]:checked").val();
+                var wait_interval = 2000;
+                if(mode == 'rand'){
+                    wait_interval = (Math.random() * (2000)) + 1000;
+                }
+                console.log(wait_interval);
+
+                setTimeout(function(){
+                    document.slideshow.src = "0.jpg";
+                }, wait_interval);
+            }
+            function start(){
+                $("#start").hide();
+                refreshIntervalId = setInterval(slide, 2500);
+            }
+            $(function(){
+                $("#start").click(function() {
+                    start(); 
+                });
+                $("#stop").click(function() {
+                    clearInterval(refreshIntervalId);
+                    init();
+                });
+            });
+            
+        </script>
+        <div style="margin: auto; width: 50%;">
+            <input name='mode' type='radio' value="no_rand" checked/>일반타이머
+            <input name='mode' type='radio' value="rand"/>랜덤타이머
+            <input id='start' type='button' value="시작" style="padding: 5px; width: 50px; font-size: 18px;"/>
+            <input id='stop' type='button' value="정지" style="padding: 5px; width: 50px; font-size: 18px;"/>
+        </div>
+        <div style="margin: auto; width: 50%;">
+        </div>
+        <div id='direction'>
+            <img src="0.jpg" name="slideshow" width="50%" style="display: block; margin-left: auto; margin-right: auto;">
+        </div>
+    </body>
+</html>
